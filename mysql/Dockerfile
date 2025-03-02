@@ -13,6 +13,8 @@
 
 FROM mysql:8.0
 ENV MYSQL_ROOT_PASSWORD=ExpenseApp@1
+RUN groupadd expense
+RUN useradd -g expense expense
 ADD /schema/*.sql /docker-entrypoint-initdb.d
 RUN chmod -R 775 /docker-entrypoint-initdb.d
 USER expense
