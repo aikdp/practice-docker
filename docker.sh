@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USER_ID = $(id -u)
+USER_ID=$(id -u)
 
 VALIDATE(){
     if [ $1 -ne 0 ]
@@ -14,8 +14,9 @@ VALIDATE(){
 CHECK(){
     if [ $USER_ID -ne 0 ]
     then 
-    echo "Please Run this scirpt with ROOT previleges"
-    exit 1
+        echo "Please Run this scirpt with ROOT previleges"
+        exit 1
+    fi
 }
 CHECK
 
