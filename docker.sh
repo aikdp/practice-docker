@@ -30,9 +30,9 @@ dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-co
 
 systemctl start docker
 
-usermode -aG docker ec2-user
-VALIDATE $? "USer added in Docker group"
+usermod -aG docker ec2-user
+VALIDATE $? "User added in Docker group"
 
 docker run hello-world
 
-docker -version
+docker --version
