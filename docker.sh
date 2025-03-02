@@ -9,7 +9,7 @@ sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 
 sudo systemctl start docker
 
-usermode -aG docker ec2-user
+usermod -aG docker ec2-user
 
 sudo docker run hello-world
 
