@@ -1,16 +1,36 @@
 #!/bin/bash
 
+USER_ID = $(id -u)
 
-sudo dnf -y install dnf-plugins-core
+VALIDATE(){
+    if [ $1 -ne 0 ]
+    then
+        echo "$2 is FAILED"
+    else
+        echo "$2 is SUCCESS"
+     fi
+}
+
+CHECK(){
+    if [ $USER_ID -ne 0 ]
+    then 
+    echo "Please Run this scirpt with ROOT previleges"
+    exit 1
+}
+CHECK
+
+
+dnf -y install dnf-plugins-core
  
-sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
 
-sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
-sudo systemctl start docker
+systemctl start docker
 
-usermod -aG docker ec2-user
+usermode -aG docker ec2-user
+VALIDATE $2 "USer added in Docker group"
 
-sudo docker run hello-world
+docker run hello-world
 
 docker -version
