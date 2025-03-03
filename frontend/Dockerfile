@@ -37,4 +37,4 @@ COPY expense.conf /etc/nginx/conf.d/expense.conf
 # Start Nginx in foreground mode
 CMD ["nginx", "-g", "daemon off;"]
 
-/etc/nginx/conf.d/expense.conf
+
