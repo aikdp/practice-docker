@@ -40,7 +40,7 @@ EXPOSE 8080
 
 # Create group & user properly
 RUN addgroup -g 1001 expense && \
-    useradd -m -g expense -s /bin/bash expense && \
+    adduser -m -g expense -s /bin/bash expense && \
     mkdir -p /opt/app && \
     chown -R expense:expense /opt/app
 
