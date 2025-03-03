@@ -13,8 +13,8 @@ RUN groupadd expense && \
 
 WORKDIR /opt/app
 
-RUN /node/*.js .
-RUN /node/*.json .
+COPY /node/*.js .
+COPY /node/*.json .
 
 RUN npm install
 # ADD *.service /etc/systemd/system/backend.service
@@ -22,4 +22,9 @@ USER expense
 CMD ["node", "index.js"]
 
 
+
+# groupadd expense → Creates a group without a numeric GID (auto-assigns one).
+# useradd -g expense expense → Creates the user and assigns the primary group expense.
+# usermod -aG expense expense → Ensures the user is added to the group.
+# chown -R expense:expense /opt/app → Sets ownership of /opt/app.
 
