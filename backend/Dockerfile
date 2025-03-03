@@ -1,6 +1,7 @@
 FROM node:20
 #DB_HOST--mysql is the address to connect backend to mysql db.
 ENV DB_HOST="mysql" 
+EXPOSE 8080
 RUN mkdir -p /opt/app
 
 # RUN useradd expense &&\
