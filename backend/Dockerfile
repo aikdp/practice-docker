@@ -30,7 +30,7 @@
 # chown -R expense:expense /opt/app → Sets ownership of /opt/app.
 
 
-FROM node:20
+FROM node:20.18.0-alpine3.20
 
 # Set environment variable for MySQL container name
 ENV DB_HOST="mysql"
@@ -38,22 +38,20 @@ ENV DB_HOST="mysql"
 # Expose application port
 EXPOSE 8080
 
-# Create application directory
-RUN mkdir -p /opt/app
-
 # Create group & user properly
 RUN groupadd -g 1001 expense && \
     useradd -m -g expense -s /bin/bash expense && \
+    mkdir -p /opt/app && \
     chown -R expense:expense /opt/app
 
 # Set working directory
 WORKDIR /opt/app
 
 # Copy project files
-COPY node/* ./
+COPY node/* .
 
 # Install dependencies
-RUN npm install
+RUN npm install 
 
 # Switch to non-root user
 USER expense
