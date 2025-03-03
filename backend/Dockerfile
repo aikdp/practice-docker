@@ -69,6 +69,7 @@
 # Use an official Node.js image as a base
 FROM node:20.18.0-alpine3.20
 
+ENV DB_HOST="mysql"
 # Create a group and a user
 RUN addgroup -S expense && adduser -S expense -G expense && \
     mkdir -p /opt/app && \
@@ -90,4 +91,4 @@ USER expense
 EXPOSE 8080
 
 # Start the application
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]
