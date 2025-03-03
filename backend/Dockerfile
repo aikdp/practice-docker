@@ -3,9 +3,13 @@ FROM node:20
 ENV DB_HOST="mysql" 
 RUN mkdir -p /opt/app
 
-RUN useradd expense &&\
-    groupadd -g expense expense && \
-    chmod -aG expense:expense /opt/app
+# RUN useradd expense &&\
+#     groupadd -g expense expense && \
+#     chmod -aG expense:expense /opt/app
+RUN groupadd expense && \
+    useradd -g expense expense && \
+    usermod -aG expense expense && \
+    chown -R expense:expense /opt/app
 
 WORKDIR /opt/app
 
