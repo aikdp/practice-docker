@@ -7,10 +7,10 @@ RUN mkdir -p /opt/app
 # RUN useradd expense &&\
 #     groupadd -g expense expense && \
 #     chmod -aG expense:expense /opt/app
-RUN groupadd expense && \
-    useradd -g expense expense && \
-    usermod -aG expense expense && \
-    chown -R expense:expense /opt/app
+# RUN groupadd expense && \
+#     useradd -g expense expense && \
+#     usermod -aG expense expense && \
+#     chown -R expense:expense /opt/app
 
 WORKDIR /opt/app
 
@@ -19,7 +19,7 @@ COPY /node/*.json .
 
 RUN npm install
 # ADD *.service /etc/systemd/system/backend.service
-USER expense
+# USER expense
 CMD ["node", "index.js"]
 
 
