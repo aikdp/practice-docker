@@ -32,7 +32,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy expense.conf to the correct Nginx configuration directory
 COPY expense.conf /etc/nginx/default.d/expense.conf
 
-USER nginx
+# USER nginx
 
 # Start Nginx in foreground mode
 CMD ["nginx", "-g", "daemon off;"]
