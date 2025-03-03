@@ -79,8 +79,10 @@ RUN addgroup -S expense && adduser -S expense -G expense && \
 WORKDIR /opt/app
 
 # Copy package.json and install dependencies
-COPY *.js .
 COPY package.json .
+
+COPY *.js .
+
 RUN npm install
 
 
