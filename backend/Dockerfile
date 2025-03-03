@@ -39,7 +39,7 @@ ENV DB_HOST="mysql"
 EXPOSE 8080
 
 # Create group & user properly
-RUN groupadd -g 1001 expense && \
+RUN addgroup -g 1001 expense && \
     useradd -m -g expense -s /bin/bash expense && \
     mkdir -p /opt/app && \
     chown -R expense:expense /opt/app
