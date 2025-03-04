@@ -116,7 +116,8 @@ EXPOSE 8080
 RUN addgroup -S expense && adduser -S expense -G expense && \
     mkdir -p /opt/app && \
     chown -R expense:expense /opt/app
-COPY --from=build /opt/app/* /opt/app
+WORKDIR /opt/app
+COPY --from=build /opt/app /opt/app
 USER expense
 CMD ["node", "index.js"]
 
