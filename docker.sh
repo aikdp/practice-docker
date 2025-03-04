@@ -62,4 +62,6 @@ VALIDATE $? "Resize of RootVol"
 xfs_growfs /var
 VALIDATE $? "Resize of VarVol"
 
+df -hT
+
 echo "Exit and Login Agian will work Docker commands. Thanks"
