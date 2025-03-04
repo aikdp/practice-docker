@@ -18,9 +18,9 @@ services:
   frontend:
     image: kdprasad028/frontend:v1
     container_name: frontend
-    depends_on:             
-        - backend
     ports:
         - 80:80
+    depends_on:             
+        - backend
 volumes:
   mysql:
