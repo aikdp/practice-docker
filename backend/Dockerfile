@@ -128,7 +128,7 @@ WORKDIR /opt/app
 
 # Copy package files first (better caching)
 COPY /node/*.js /node/*.json ./
-RUN npm ci
+RUN npm install
 
 # Copy the rest of the application
 COPY . .
@@ -144,7 +144,7 @@ RUN addgroup -S expense && adduser -S expense -G expense && \
     chown -R expense:expense /opt/app
 
 WORKDIR /opt/app
-COPY --from=build /opt/app /opt/app
+COPY --from=build /opt/app/*.js /opt/app/node_modules /opt/app
 
 USER expense
 CMD ["node", "index.js"]
