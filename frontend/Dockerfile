@@ -1,17 +1,17 @@
-# FROM nginx:1.26.3-alpine
-# EXPOSE 80
-# RUN rm -rf /usr/share/nginx/html/*
+FROM nginx:1.26.3-alpine
+EXPOSE 80
+RUN rm -rf /usr/share/nginx/html/*
 
-# COPY code/ /usr/share/nginx/html/
+COPY code/ /usr/share/nginx/html/
 
-# RUN rm -rf /etc/nginx/nginx.conf
-# RUN rm -rf /etc/nginx/conf.d/default.conf
+RUN rm -rf /etc/nginx/nginx.conf
+RUN rm -rf /etc/nginx/conf.d/default.conf
 
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# COPY expense.conf /etc/nginx/default.d/expense.conf
+COPY expense.conf /etc/nginx/default.d/expense.conf
 
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
 
 
 
@@ -76,27 +76,27 @@
 
 
 
-# Use stable NGINX with Alpine-based image
-FROM nginx:stable-alpine3.20
+# # Use stable NGINX with Alpine-based image
+# FROM nginx:stable-alpine3.20
 
-# Remove default HTML files and configurations
-RUN rm -rf /usr/share/nginx/html/* && \
-    rm -rf /etc/nginx/nginx.conf && \
-    rm -rf /etc/nginx/conf.d/*
+# # Remove default HTML files and configurations
+# RUN rm -rf /usr/share/nginx/html/* && \
+#     rm -rf /etc/nginx/nginx.conf && \
+#     rm -rf /etc/nginx/conf.d/*
 
-# Copy application files, configurations, and SSL files in one command
-COPY code /usr/share/nginx/html/ 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY expense.conf /etc/nginx/default.d/expense.conf
+# # Copy application files, configurations, and SSL files in one command
+# COPY code /usr/share/nginx/html/ 
+# COPY nginx.conf /etc/nginx/nginx.conf
+# COPY expense.conf /etc/nginx/default.d/expense.conf
 
-# Set up Nginx cache and permissions in one layer
-RUN mkdir -p /var/cache/nginx/{client_temp,proxy_temp,fastcgi_temp,uwsgi_temp,scgi_temp} && \
-    chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/log/nginx && \
-    chmod -R 755 /etc/nginx /var/log/nginx && \
-    touch /var/run/nginx.pid && \
-    chown nginx:nginx /var/run/nginx.pid
+# # Set up Nginx cache and permissions in one layer
+# RUN mkdir -p /var/cache/nginx/{client_temp,proxy_temp,fastcgi_temp,uwsgi_temp,scgi_temp} && \
+#     chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/log/nginx && \
+#     chmod -R 755 /etc/nginx /var/log/nginx && \
+#     touch /var/run/nginx.pid && \
+#     chown nginx:nginx /var/run/nginx.pid
 
-USER nginx
+# USER nginx
 
-# Start Nginx in foreground mode
-CMD ["nginx", "-g", "daemon off;"]
+# # Start Nginx in foreground mode
+# CMD ["nginx", "-g", "daemon off;"]
