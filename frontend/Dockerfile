@@ -77,9 +77,9 @@
 
 
 # Use stable NGINX with Alpine-based image
-# FROM nginx:stable-alpine3.20
+FROM nginx:stable-alpine3.20
 # FROM nginx:1.26.3-alpine
-FROM nginx
+# FROM nginx
 
 # Remove default HTML files and configurations
 RUN rm -rf /usr/share/nginx/html/* && \
