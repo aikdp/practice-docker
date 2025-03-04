@@ -112,7 +112,7 @@ RUN npm install
 FROM node:23-alpine3.20
 ENV DB_HOST="mysql"   
 EXPOSE 8080
-RUN mkdir -p /opt/app
+# RUN mkdir -p /opt/app
 RUN addgroup -S expense && adduser -S expense -G expense && \
     mkdir -p /opt/app && \
     chown -R expense:expense /opt/app
