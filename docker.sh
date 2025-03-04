@@ -43,4 +43,23 @@ VALIDATE $? "Response from Docker"
 docker --version
 VALIDATE $? "Displaying Docker Version"
 
+
+
+
+#Resize Disk
+lsblk
+
+growpart /dev/nvme0n1 4
+VALIDATE $? "Disk Partition"
+
+lvextend -l +50%FREE /dev/RootVG/rootVol 
+
+
+lvextend -l +50%FREE /dev/RootVG/varVol
+xfs_growfs /
+VALIDATE $? "Resize of RootVol"
+
+xfs_growfs /var
+VALIDATE $? "Resize of VarVol"
+
 echo "Exit and Login Agian will work Docker commands. Thanks"
