@@ -127,7 +127,7 @@ FROM node:20 AS build
 WORKDIR /opt/app
 
 # Copy package files first (better caching)
-COPY package.json package-lock.json ./
+COPY /node/*.js /node/*.json ./
 RUN npm ci --only=production
 
 # Copy the rest of the application
