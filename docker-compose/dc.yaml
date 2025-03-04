@@ -1,0 +1,24 @@
+version: '3.8'
+networks:
+  expense:
+services:
+  mysql:
+    image: kdprasad028/mysql:v1
+    container_name: mysql
+    volumes:
+      - mysql:/var/lib/mysql        # -v mysql:/varlib/mysql    #equals to--> docker run -d -v <host-path-to-volume>:<cont-path-volume> mysql:v1
+
+  backend:
+    image: kdprasad028/backend:v1
+    container_name: backend
+    command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"]
+    depends_on:             
+        - mysql
+
+  frontend:
+    image: kdprasad028/frontend:v1
+    container_name: frontend
+    depends_on:             
+        - backend
+volumes:
+  mysql:
