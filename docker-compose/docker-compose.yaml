@@ -12,7 +12,8 @@ services:
   backend:
     image: kdprasad028/backend:v1
     container_name: backend
-    command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
+    # command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
+    command:  sh -c "sleep 5 && node /opt/server/index.js" 
     depends_on:             
     - mysql
   frontend:
