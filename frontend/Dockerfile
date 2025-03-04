@@ -91,8 +91,8 @@ COPY expense.conf /etc/nginx/default.d/expense.conf
 
 # Set up Nginx cache and permissions in one layer
 RUN mkdir -p /var/cache/nginx/{client_temp,proxy_temp,fastcgi_temp,uwsgi_temp,scgi_temp} && \
-    chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/log/nginx /etc/nginx/ssl && \
-    chmod -R 755 /etc/nginx /etc/nginx/ssl /var/log/nginx && \
+    chown -R nginx:nginx /var/cache/nginx /etc/nginx /var/log/nginx && \
+    chmod -R 755 /etc/nginx /var/log/nginx && \
     touch /var/run/nginx.pid && \
     chown nginx:nginx /var/run/nginx.pid
 
