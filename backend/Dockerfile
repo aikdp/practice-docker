@@ -128,7 +128,7 @@ WORKDIR /opt/app
 
 # Copy package files first (better caching)
 COPY /node/*.js /node/*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
 # Copy the rest of the application
 COPY . .
