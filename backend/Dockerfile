@@ -109,7 +109,8 @@ RUN npm install
 
 
 
-FROM node:23-alpine3.20
+# FROM node:23-alpine3.20
+FORM node:20.18.0-alpine3.20
 ENV DB_HOST="mysql"   
 EXPOSE 8080
 # RUN mkdir -p /opt/app
