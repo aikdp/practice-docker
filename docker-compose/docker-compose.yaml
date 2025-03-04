@@ -9,13 +9,18 @@ services:
     container_name: mysql
     volumes:
     - mysql:/var/lib/mysql        # -v mysql:/varlib/mysql    #equals to--> docker run -d -v <host-path-to-volume>:<cont-path-volume> mysql:v1
+    networks:
+      - expense
   backend:
     image: kdprasad028/backend:v1
     container_name: backend
     # command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
     command:  sh -c "sleep 5 && node /opt/app/index.js" 
+    # command: command: sh -c "sleep 5 && until nc -z mysql 3306; do sleep 2; done && node /opt/app/index.js"
     depends_on:             
     - mysql
+    networks:
+      - expense
   frontend:
     image: kdprasad028/frontend:v1
     container_name: frontend
@@ -23,3 +28,5 @@ services:
     - 80:80
     depends_on:             
     - backend
+    networks:
+      - expense
