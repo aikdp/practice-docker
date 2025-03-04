@@ -98,53 +98,27 @@
 
 
 
-# #After best practice
-# FROM node:20 AS build
-# RUN mkdir -p /opt/app
-# WORKDIR /opt/app
-# COPY /node/*.js .
-# COPY /node/*.json .
-# RUN npm install
-# # ADD *.service /etc/systemd/system/backend.service
-
-
-
-# FROM node:23-alpine3.20
-# ENV DB_HOST="mysql"   
-# EXPOSE 8080
-# # RUN mkdir -p /opt/app
-# RUN addgroup -S expense && adduser -S expense -G expense && \
-#     mkdir -p /opt/app && \
-#     chown -R expense:expense /opt/app
-# WORKDIR /opt/app
-# COPY --from=build /opt/app /opt/app
-# USER expense
-# CMD ["node", "index.js"]
-
-
-# ---- Stage 1: Build ----
+#After best practice
 FROM node:20 AS build
+RUN mkdir -p /opt/app
 WORKDIR /opt/app
-
-# Copy package files first (better caching)
-COPY /node/*.js /node/*.json ./
+COPY /node/*.js .
+COPY /node/*.json .
 RUN npm install
+# ADD *.service /etc/systemd/system/backend.service
 
-# Copy the rest of the application
-COPY . .
 
-# ---- Stage 2: Runtime ----
+
 FROM node:23-alpine3.20
-ENV DB_HOST="mysql"  
+ENV DB_HOST="mysql"   
 EXPOSE 8080
-
-# Create a non-root user & secure directories
+# RUN mkdir -p /opt/app
 RUN addgroup -S expense && adduser -S expense -G expense && \
     mkdir -p /opt/app && \
     chown -R expense:expense /opt/app
-
 WORKDIR /opt/app
-COPY --from=build /opt/app/*.js /opt/app/node_modules /opt/app
-
+COPY --from=build /opt/app /opt/app
 USER expense
 CMD ["node", "index.js"]
+
+
