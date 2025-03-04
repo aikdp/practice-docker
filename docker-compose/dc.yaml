@@ -6,7 +6,7 @@ services:
     image: kdprasad028/mysql:v1
     container_name: mysql
     volumes:
-      - mysql:/var/lib/mysql        # -v mysql:/varlib/mysql    #equals to--> docker run -d -v <host-path-to-volume>:<cont-path-volume> mysql:v1
+    - mysql:/var/lib/mysql        # -v mysql:/varlib/mysql    #equals to--> docker run -d -v <host-path-to-volume>:<cont-path-volume> mysql:v1
 
   backend:
     image: kdprasad028/backend:v1
@@ -19,7 +19,7 @@ services:
     image: kdprasad028/frontend:v1
     container_name: frontend
     ports:
-        - 80:80
+      - 80:80
     depends_on:             
         - backend
 volumes:
