@@ -24,7 +24,7 @@ services:
       - roboshop
     
   redis:
-    image: redis
+    image: kdprasad028/redis:v1
     container_name: redis
     volumes:
         - redis:/data     
@@ -32,7 +32,7 @@ services:
       - roboshop
   
   rabbitmq:
-    image: rabbitmq
+    image: kdprasad028/rabbitmq:v1
     container_name: rabbitmq
     volumes:
         - rabbitmq:var/lib/rabbitmq/mnesia     
@@ -95,7 +95,7 @@ services:
     networks:
      - roboshop
   frontend:
-    image: kdprasad028/robomysql:v1
+    image: kdprasad028/frontend:v1
     container_name: frontend
     ports:
     - 80:80
