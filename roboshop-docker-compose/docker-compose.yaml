@@ -1,0 +1,110 @@
+version: "3"
+networks:
+  roboshop:
+volumes:
+ - mysql
+ - mongodata
+ - redis
+ - rabbitmq
+services:
+  mysql:
+    image: kdprasad028/robomysql:v1
+    container_name: mysql
+    volumes:
+    - mysql:/var/lib/mysql        # -v mysql:/varlib/mysql    #equals to--> docker run -d -v <host-path-to-volume>:<cont-path-volume> mysql:v1
+    networks:
+      - roboshop
+    
+  mongo:
+    image: kdprasad028/mongodb:v1
+    container_name: mongo
+    volumes:
+    - mongodata:/data/db     
+    networks:
+      - roboshop
+    
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+        - redis:/data     
+    networks:
+      - roboshop
+  
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    volumes:
+        - rabbitmq:var/lib/rabbitmq/mnesia     
+    networks:
+      - roboshop
+    
+  catalogue:
+    image: kdprasad028/catalogue:v1
+    container_name: catalogue
+    # command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
+    # command:  sh -c "sleep 10 && node /opt/app/index.js" 
+    command: sh -c "sleep 10 && until nc -z mongo 27017; do sleep 2; done && node server.js"
+    depends_on:             
+    - mongo
+    networks:
+      - roboshop
+  cart:
+    image: kdprasad028/cart:v1
+    container_name: cart
+    # command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
+    # command:  sh -c "sleep 10 && node /opt/app/index.js" 
+    command: sh -c "sleep 10 && until nc -z redis 6379; do sleep 2; done && node server.js"
+    depends_on:             
+    - redis
+    - mongo
+    networks:
+      - roboshop
+  user:
+    image: kdprasad028/user:v1
+    container_name: user 
+    command: sh -c "sleep 10 && until nc -z redis 6379; do sleep 2; done && node server.js"
+    depends_on:             
+    - redis
+    - mongo
+    networks:
+      - roboshop
+  shipping:
+    image: kdprasad028/shipping:v1
+    container_name: shipping 
+    command: mvn clean install
+    depends_on:             
+    - mysql
+    networks:
+     - roboshop
+    
+  payment:
+    image: kdprasad028/payment:v1
+    container_name: payment 
+    command: python payment.py
+    depends_on:             
+    - rabbitmq
+    networks:
+     - roboshop
+  dispatch:
+    image: kdprasad028/dispatch:v1
+    container_name: dispatch 
+    command: go run main.go
+    depends_on:             
+    - mysql
+    networks:
+     - roboshop
+  frontend:
+    image: kdprasad028/robomysql:v1
+    container_name: frontend
+    ports:
+    - 80:80
+    depends_on:             
+    - catalogue
+    - cart
+    - user
+    - shipping
+    - payment
+    - dispatch
+    networks:
+      - roboshop
