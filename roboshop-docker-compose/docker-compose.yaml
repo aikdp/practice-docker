@@ -69,14 +69,14 @@ services:
     - mongo
     networks:
       - roboshop
-  # shipping:
-  #   image: kdprasad028/shipping:v1
-  #   container_name: shipping 
-  #   command: mvn clean install
-  #   depends_on:             
-  #   - mysql
-  #   networks:
-  #    - roboshop
+  shipping:
+    image: kdprasad028/shipping:v1
+    container_name: shipping 
+    command: mvn clean install
+    depends_on:             
+    - mysql
+    networks:
+     - roboshop
     
   payment:
     image: kdprasad028/payment:v1
@@ -86,14 +86,14 @@ services:
     - rabbitmq
     networks:
      - roboshop
-  # dispatch:
-  #   image: kdprasad028/dispatch:v1
-  #   container_name: dispatch 
-  #   command: go run main.go
-  #   depends_on:             
-  #   - mysql
-  #   networks:
-  #    - roboshop
+  dispatch:
+    image: kdprasad028/dispatch:v1
+    container_name: dispatch 
+    command: go run main.go
+    depends_on:             
+    - mysql
+    networks:
+     - roboshop
   frontend:
     image: kdprasad028/frontend:v1
     container_name: frontend
@@ -103,8 +103,8 @@ services:
     - catalogue
     - cart
     - user
-    # - shipping
+    - shipping
     - payment
-    # - dispatch
+    - dispatch
     networks:
       - roboshop
