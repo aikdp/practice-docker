@@ -1,12 +1,12 @@
 #Eg:2
 #Stage:1
-FROM node:20 AS build
+FROM maven AS build
 RUN mkdir -p /opt/shipping
 WORKDIR /opt/shipping
 COPY pom.xml .
 RUN mvn dependency:resolve
 COPY src /opt/shipping/src/
-RUN mvn package 
+RUN mvn clean package 
 
 # Stage:2
 # FROM node:23-alpine3.20
