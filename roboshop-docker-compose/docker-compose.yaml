@@ -69,14 +69,14 @@ services:
     - mongo
     networks:
       - roboshop
-  shipping:
-    image: kdprasad028/shipping:v1
-    container_name: shipping 
-    command: mvn clean install
-    depends_on:             
-    - mysql
-    networks:
-     - roboshop
+  # shipping:
+  #   image: kdprasad028/shipping:v1
+  #   container_name: shipping 
+  #   command: mvn clean install
+  #   depends_on:             
+  #   - mysql
+  #   networks:
+  #    - roboshop
     
   payment:
     image: kdprasad028/payment:v1
