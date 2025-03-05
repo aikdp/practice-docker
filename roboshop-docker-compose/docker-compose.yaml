@@ -16,7 +16,7 @@ services:
       - roboshop
     
   mongo:
-    image: kdprasad028/mongodb:v1
+    image: kdprasad028/mongo:v1
     container_name: mongo
     volumes:
     - mongodata:/data/db     
