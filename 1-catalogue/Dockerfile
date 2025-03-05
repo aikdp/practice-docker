@@ -19,7 +19,7 @@ WORKDIR /opt/server
 # Copy necessary build output from the previous stage
 COPY --from=build /opt/server/node_modules node_modules
 COPY --from=build /opt/server/server.js server.js
-COPY --from=build /opt/server/config config 
+# COPY --from=build /opt/server/config config 
 USER roboshop
 CMD ["node", "server.js"]
 
