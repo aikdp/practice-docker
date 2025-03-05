@@ -72,7 +72,7 @@ services:
   shipping:
     image: kdprasad028/shipping:v1
     container_name: shipping 
-    command: mvn clean install
+    command: java -jar target/shipping.jar
     depends_on:             
     - mysql
     networks:
@@ -95,7 +95,7 @@ services:
     networks:
      - roboshop
   frontend:
-    image: kdprasad028/frontend:v1
+    image: kdprasad028/robofrontend:v1
     container_name: frontend
     ports:
     - 80:80
