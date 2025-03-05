@@ -89,7 +89,7 @@ services:
   dispatch:
     image: kdprasad028/dispatch:v1
     container_name: dispatch 
-    command: go run main.go
+    command: ["go", "run", "main.go"]
     depends_on:             
     - mysql
     networks:
