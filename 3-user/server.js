@@ -10,8 +10,7 @@ const expPino = require('express-pino-logger');
 var db;
 var usersCollection;
 var ordersCollection;
-// var mongoConnected = false; #original
-var mongoConnect = false;
+var mongoConnected = false; 
 
 const logger = pino({
     level: 'info',
@@ -39,8 +38,7 @@ app.use(bodyParser.json());
 app.get('/health', (req, res) => {
     var stat = {
         app: 'OK',
-        // mongo: mongoConnected #original
-        mongo: mongoConnect
+        mongo: mongoConnected
     };
     res.json(stat);
 });
@@ -62,8 +60,7 @@ app.get('/uniqueid', (req, res) => {
 
 // check user exists
 app.get('/check/:id', (req, res) => {
-    // if(mongoConnected) { #original
-    if(mongoConnect) {
+    if(mongoConnected) { 
         usersCollection.findOne({name: req.params.id}).then((user) => {
             if(user) {
                 res.send('OK');
@@ -82,8 +79,7 @@ app.get('/check/:id', (req, res) => {
 
 // return all users for debugging only
 app.get('/users', (req, res) => {
-    // if(mongoConnected) { #original
-    if(mongoConnect) {
+    if(mongoConnected) { 
         usersCollection.find().toArray().then((users) => {
             res.json(users);
         }).catch((e) => {
@@ -101,8 +97,7 @@ app.post('/login', (req, res) => {
     if(req.body.name === undefined || req.body.password === undefined) {
         req.log.warn('credentails not complete');
         res.status(400).send('name or passowrd not supplied');
-    // } else if(mongoConnected) { #Original
-       } else if(mongoConnect) {
+    } else if(mongoConnected) {
         usersCollection.findOne({
             name: req.body.name,
         }).then((user) => {
@@ -132,8 +127,7 @@ app.post('/register', (req, res) => {
     if(req.body.name === undefined || req.body.password === undefined || req.body.email === undefined) {
         req.log.warn('insufficient data');
         res.status(400).send('insufficient data');
-    // } else if(mongoConnected) { #Original    
-    } else if(mongoConnect) {
+    } else if(mongoConnected) { 
         // check if name already exists
         usersCollection.findOne({name: req.body.name}).then((user) => {
             if(user) {
@@ -166,8 +160,7 @@ app.post('/register', (req, res) => {
 app.post('/order/:id', (req, res) => {
     req.log.info('order', req.body);
     // only for registered users
-    // if(mongoConnected) { #original
-        if(mongoConnect) {
+    if(mongoConnected) { 
         usersCollection.findOne({
             name: req.params.id
         }).then((user) => {
@@ -219,8 +212,7 @@ app.post('/order/:id', (req, res) => {
 });
 
 app.get('/history/:id', (req, res) => {
-    // if(mongoConnected) { #original
-    if(mongoConnect) {
+    if(mongoConnected) { 
         ordersCollection.findOne({
             name: req.params.id
         }).then((history) => {
@@ -253,7 +245,8 @@ redisClient.on('ready', (r) => {
 
 if (process.env.MONGO == 'true') {
 // set up Mongo
-function mongoConnect() {
+// function mongoConnect() { //Original
+    function mongoConnected() {
     return new Promise((resolve, reject) => {
         var mongoURL = process.env.MONGO_URL || 'mongodb://mongodb:27017/users';
         mongoClient.connect(mongoURL, (error, client) => {
@@ -271,7 +264,8 @@ function mongoConnect() {
 }
 
 if (process.env.DOCUMENTDB == 'true') {
-function mongoConnect() {
+// function mongoConnect() { //original
+function mongoConnected() {
     return new Promise((resolve, reject) => {
     var mongoURL = process.env.MONGO_URL || 'mongodb://username:password@mongodb:27017/users?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false';
     var client = mongoClient.connect(mongoURL,
@@ -297,9 +291,9 @@ function mongoConnect() {
 
 
 function mongoLoop() {
-    mongoConnect().then((r) => {
-        // mongoConnected = true; #Original
-        mongoConnect = true;
+    // mongoConnect().then((r) => {  //original
+    mongoConnected().then((r) => {
+        mongoConnected = true; 
         logger.info('MongoDB connected');
     }).catch((e) => {
         logger.error('ERROR', e);
