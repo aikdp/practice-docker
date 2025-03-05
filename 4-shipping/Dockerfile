@@ -6,7 +6,7 @@ WORKDIR /opt/shipping
 COPY pom.xml .
 RUN mvn dependency:resolve
 COPY src /opt/shipping/src/
-RUN mvn clean package 
+RUN mvn package 
 
 # Stage:2
 # FROM node:23-alpine3.20
