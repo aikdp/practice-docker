@@ -103,7 +103,7 @@ services:
     - catalogue
     - cart
     - user
-    - shipping
+    # - shipping
     - payment
     # - dispatch
     networks:
