@@ -86,14 +86,14 @@ services:
     - rabbitmq
     networks:
      - roboshop
-  dispatch:
-    image: kdprasad028/dispatch:v1
-    container_name: dispatch 
-    command: go run main.go
-    depends_on:             
-    - mysql
-    networks:
-     - roboshop
+  # dispatch:
+  #   image: kdprasad028/dispatch:v1
+  #   container_name: dispatch 
+  #   command: go run main.go
+  #   depends_on:             
+  #   - mysql
+  #   networks:
+  #    - roboshop
   frontend:
     image: kdprasad028/frontend:v1
     container_name: frontend
@@ -105,6 +105,6 @@ services:
     - user
     - shipping
     - payment
-    - dispatch
+    # - dispatch
     networks:
       - roboshop

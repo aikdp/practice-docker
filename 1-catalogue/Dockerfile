@@ -16,7 +16,10 @@ RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
     mkdir -p /opt/server && \
     chown -R roboshop:roboshop /opt/server
 WORKDIR /opt/server
-COPY --from=build /opt/server /opt/server
+# Copy necessary build output from the previous stage
+COPY --from=build /opt/server/node_modules node_modules
+COPY --from=build /opt/server/server.js server.js
+COPY --from=build /opt/server/config config 
 USER roboshop
 CMD ["node", "server.js"]
 
