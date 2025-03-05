@@ -1,25 +1,25 @@
-#Eg:2
-#Stage:1
-FROM maven AS build
-RUN mkdir -p /opt/shipping
-WORKDIR /opt/shipping
-COPY pom.xml .
-RUN mvn dependency:resolve
-COPY src /opt/shipping/src
-RUN mvn clean package -DskipTests
+# #Eg:2
+# #Stage:1
+# FROM maven AS build
+# RUN mkdir -p /opt/shipping
+# WORKDIR /opt/shipping
+# COPY pom.xml .
+# RUN mvn dependency:resolve
+# COPY src /opt/shipping/src
+# RUN mvn clean package -DskipTests
 
-# Stage:2
-# FROM node:23-alpine3.20
-# FROM node:20.18.0-alpine3.20  
-FROM openjdk:8-jre-alpine3.9
-EXPOSE 8080
-RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
-    mkdir -p /opt/shipping && \
-    chown -R roboshop:roboshop /opt/shipping
-WORKDIR /opt/shipping
-COPY --from=build /opt/shipping/target/shipping-*.jar shipping.jar
-USER roboshop
-CMD [ "java", "-Xmn256m", "-Xmx768m", "-jar", "shipping.jar" ]
+# # Stage:2
+# # FROM node:23-alpine3.20
+# # FROM node:20.18.0-alpine3.20  
+# FROM openjdk:8-jre-alpine3.9
+# EXPOSE 8080
+# RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
+#     mkdir -p /opt/shipping && \
+#     chown -R roboshop:roboshop /opt/shipping
+# WORKDIR /opt/shipping
+# COPY --from=build /opt/shipping/target/shipping-*.jar shipping.jar
+# USER roboshop
+# CMD [ "java", "-Xmn256m", "-Xmx768m", "-jar", "shipping.jar" ]
 
 
 #Eg:2
@@ -38,3 +38,29 @@ CMD [ "java", "-Xmn256m", "-Xmx768m", "-jar", "shipping.jar" ]
 # COPY --from=builder /app/target/*.jar /app/
 # EXPOSE 8080
 # ENTRYPOINT ["java", "-jar", "/app/*.jar"]
+
+
+#SIVA CODE
+#Build
+
+FROM maven AS build
+
+WORKDIR /opt/shipping
+
+COPY pom.xml /opt/shipping/
+RUN mvn dependency:resolve
+COPY src /opt/shipping/src/
+RUN mvn package
+
+#
+# Run
+#
+FROM openjdk:8-jre-alpine3.9
+
+EXPOSE 8080
+
+WORKDIR /opt/shipping
+
+COPY --from=build /opt/shipping/target/shipping-*.jar shipping.jar
+
+CMD [ "java", "-Xmn256m", "-Xmx768m", "-jar", "shipping.jar" ]
