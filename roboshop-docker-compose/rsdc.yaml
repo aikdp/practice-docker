@@ -1,110 +1,125 @@
 version: "3"
+
 networks:
   roboshop:
+
 volumes:
   mysql:
   mongodata:
   redis:
   rabbitmq:
+
 services:
   mysql:
     image: kdprasad028/robomysql:v1
     container_name: mysql
     volumes:
-    - mysql:/var/lib/mysql        # -v mysql:/varlib/mysql    #equals to--> docker run -d -v <host-path-to-volume>:<cont-path-volume> mysql:v1
+      - mysql:/var/lib/mysql
     networks:
       - roboshop
-    
+    restart: always
+
   mongo:
     image: kdprasad028/mongodb:v1
     container_name: mongo
     volumes:
-    - mongodata:/data/db     
+      - mongodata:/data/db
     networks:
       - roboshop
-    
+    restart: always
+
   redis:
     image: kdprasad028/redis:v1
     container_name: redis
     volumes:
-        - redis:/data     
+      - redis:/data
     networks:
       - roboshop
-  
+    restart: always
+
   rabbitmq:
     image: kdprasad028/rabbitmq:v1
     container_name: rabbitmq
     volumes:
-      - rabbitmq:var/lib/rabbitmq/mnesia     
+      - rabbitmq:/var/lib/rabbitmq/mnesia
     networks:
       - roboshop
-    
+    restart: always
+
   catalogue:
     image: kdprasad028/catalogue:v1
     container_name: catalogue
-    # command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
-    # command:  sh -c "sleep 10 && node /opt/app/index.js" 
     command: sh -c "sleep 10 && until nc -z mongo 27017; do sleep 2; done && node server.js"
-    depends_on:             
-    - mongo
+    depends_on:
+      - mongo
     networks:
       - roboshop
+    restart: always
+
   cart:
     image: kdprasad028/cart:v1
     container_name: cart
-    # command: ["sh", "-c", "while true; do echo 'Running...'; sleep 10; done"] 
-    # command:  sh -c "sleep 10 && node /opt/app/index.js" 
     command: sh -c "sleep 10 && until nc -z redis 6379; do sleep 2; done && node server.js"
-    depends_on:             
-    - redis
-    - mongo
+    depends_on:
+      - redis
+      - mongo
     networks:
       - roboshop
+    restart: always
+
   user:
     image: kdprasad028/user:v1
-    container_name: user 
+    container_name: user
     command: sh -c "sleep 10 && until nc -z redis 6379; do sleep 2; done && node server.js"
-    depends_on:             
-    - redis
-    - mongo
+    depends_on:
+      - redis
+      - mongo
     networks:
       - roboshop
+    restart: always
+
   shipping:
     image: kdprasad028/shipping:v1
-    container_name: shipping 
-    command: mvn clean install
-    depends_on:             
-    - mysql
+    container_name: shipping
+    command: java -jar target/shipping.jar
+    depends_on:
+      - mysql
     networks:
-     - roboshop
-    
+      - roboshop
+    restart: always
+
   payment:
     image: kdprasad028/payment:v1
-    container_name: payment 
+    container_name: payment
     command: python payment.py
-    depends_on:             
-    - rabbitmq
+    depends_on:
+      - rabbitmq
     networks:
-     - roboshop
+      - roboshop
+    restart: always
+
   dispatch:
     image: kdprasad028/dispatch:v1
-    container_name: dispatch 
+    container_name: dispatch
     command: go run main.go
-    depends_on:             
-    - mysql
+    depends_on:
+      - mysql
     networks:
-     - roboshop
+      - roboshop
+    restart: always
+
   frontend:
     image: kdprasad028/frontend:v1
     container_name: frontend
     ports:
-    - 80:80
-    depends_on:             
-    - catalogue
-    - cart
-    - user
-    - shipping
-    - payment
-    - dispatch
+      - "80:80"
+    depends_on:
+      - catalogue
+      - cart
+      - user
+      - shipping
+      - payment
+      - dispatch
     networks:
       - roboshop
+    restart: always
