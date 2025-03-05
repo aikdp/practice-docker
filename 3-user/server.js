@@ -245,8 +245,7 @@ redisClient.on('ready', (r) => {
 
 if (process.env.MONGO == 'true') {
 // set up Mongo
-// function mongoConnect() { //Original
-    function mongoConnected() {
+function mongoConnect() {
     return new Promise((resolve, reject) => {
         var mongoURL = process.env.MONGO_URL || 'mongodb://mongodb:27017/users';
         mongoClient.connect(mongoURL, (error, client) => {
@@ -264,8 +263,7 @@ if (process.env.MONGO == 'true') {
 }
 
 if (process.env.DOCUMENTDB == 'true') {
-// function mongoConnect() { //original
-function mongoConnected() {
+function mongoConnect() {
     return new Promise((resolve, reject) => {
     var mongoURL = process.env.MONGO_URL || 'mongodb://username:password@mongodb:27017/users?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false';
     var client = mongoClient.connect(mongoURL,
@@ -291,8 +289,7 @@ function mongoConnected() {
 
 
 function mongoLoop() {
-    // mongoConnect().then((r) => {  //original
-    mongoConnected().then((r) => {
+    mongoConnect().then((r) => {
         mongoConnected = true; 
         logger.info('MongoDB connected');
     }).catch((e) => {
