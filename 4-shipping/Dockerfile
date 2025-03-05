@@ -6,7 +6,7 @@ WORKDIR /opt/shipping
 COPY pom.xml .
 RUN mvn dependency:resolve
 COPY src /opt/shipping/src/
-RUN mvn clean
+RUN mvn clean package 
 
 # Stage:2
 # FROM node:23-alpine3.20
@@ -17,7 +17,7 @@ RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
     mkdir -p /opt/shipping && \
     chown -R roboshop:roboshop /opt/shipping
 WORKDIR /opt/shipping
-COPY --from=build /opt/shipping/ shipping.jar
+COPY --from=build /opt/shipping/target/*.jar shipping.jar
 USER roboshop
 CMD [ "java", "-Xmn256m", "-Xmx768m", "-jar", "shipping.jar" ]
 
